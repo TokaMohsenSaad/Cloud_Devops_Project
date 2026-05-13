@@ -1,6 +1,6 @@
-From python:3.14-slim
-Workdir /app
-Copy . .
+FROM python:3.14-slim
+WORKDIR /app
+COPY . .
 RUN pip install -r requirements.txt
 EXPOSE 5000
-CMD ["python" , "app.py"]
+CMD ["python", "app.py"]
