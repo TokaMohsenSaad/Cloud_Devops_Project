@@ -13,3 +13,15 @@ variable vpc_cidr {
     type = string 
     default = "10.0.0.0/16"
 }
+
+variable enable_nat_gateway {
+    description = "enabling nat gateway"
+    type = bool
+    default = false
+}
+
+variable single_nat_gateway {
+    description = "if true, only one nat gateway will be created in the first availability zone"
+    type = bool
+    default = false
+}
