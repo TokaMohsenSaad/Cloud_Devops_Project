@@ -9,7 +9,8 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
-
+../
+.../
 # AWS CLI / local tools
 aws/
 dist/
