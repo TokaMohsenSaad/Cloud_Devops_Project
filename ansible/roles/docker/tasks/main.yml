@@ -1,4 +1,3 @@
----
 - name: Install required packages for Docker
   apt:
     name:
@@ -9,15 +8,23 @@
       - lsb-release
     state: present
 
-- name: Add Docker official GPG key
-  apt_key:
-    url: https://download.docker.com/linux/ubuntu/gpg
-    state: present
+- name: Ensure keyrings directory exists
+  file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Add Docker GPG key (dearmored)
+  shell: |
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+  args:
+    creates: /usr/share/keyrings/docker-archive-keyring.gpg
 
 - name: Add Docker repository
   apt_repository:
-    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    repo: "deb [signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
     state: present
+    filename: docker
 
 - name: Install Docker CE
   apt:
@@ -37,9 +44,8 @@
     groups: docker
     append: yes
 
-- name: Add jenkins user to docker group (created later by Jenkins role)
+- name: Add jenkins user to docker group
   user:
     name: jenkins
     groups: docker
     append: yes
-  ignore_errors: true

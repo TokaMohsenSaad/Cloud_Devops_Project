@@ -80,4 +80,7 @@ resource "aws_eks_node_group" "workers" {
     aws_iam_role_policy_attachment.eks_cni_policy,
     aws_iam_role_policy_attachment.ecr_read_only,
   ]
+  tags = {
+    Name = "${var.cluster_name}-worker-node"
+  }
 }

@@ -1,26 +1,86 @@
+- name: Remove old Jenkins repo files to prevent conflicts
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/apt/sources.list.d/jenkins.list
+    - /usr/share/keyrings/jenkins-keyring.gpg
+    - /tmp/jenkins-key.asc
+    - /etc/apt/trusted.gpg
+
 - name: Install dependencies
   apt:
     name:
       - curl
       - gnupg
+      - fontconfig
     state: present
+    update_cache: yes
 
-- name: Add Jenkins apt repository key
-  apt_key:
-    url: https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
-    state: present
+- name: Ensure keyrings directory exists
+  file:
+    path: /usr/share/keyrings
+    state: directory
+    mode: '0755'
 
-- name: Add Jenkins repository
-  apt_repository:
-    repo: 'deb https://pkg.jenkins.io/debian-stable binary/'
-    state: present
+- name: Ensure gnupg home directory exists for root
+  file:
+    path: /root/.gnupg
+    state: directory
+    mode: '0700'
+
+
+- name: Fetch the correct Jenkins signing key from keyserver
+  shell: |
+    gpg --no-default-keyring --keyring /usr/share/keyrings/jenkins-keyring.gpg --keyserver keyserver.ubuntu.com --recv-keys 7198F4B714ABFC68
+  args:
+    creates: /usr/share/keyrings/jenkins-keyring.gpg
+
+- name: Set permissions on Jenkins keyring
+  file:
+    path: /usr/share/keyrings/jenkins-keyring.gpg
+    mode: '0644'
+
+- name: Create Jenkins repository file with signed-by
+  copy:
+    content: "deb [signed-by=/usr/share/keyrings/jenkins-keyring.gpg] https://pkg.jenkins.io/debian-stable binary/\n"
+    dest: /etc/apt/sources.list.d/jenkins.list
+    mode: '0644'
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
 
 - name: Install Jenkins
   apt:
     name: jenkins
     state: present
-    update_cache: yes
   notify: Restart Jenkins
+
+- name: Ensure Java 21 is set as default
+  alternatives:
+    name: java
+    path: /usr/lib/jvm/java-21-openjdk-amd64/bin/java
+    priority: 100
+
+- name: Ensure Jenkins systemd override directory exists
+  file:
+    path: /etc/systemd/system/jenkins.service.d
+    state: directory
+    mode: '0755'
+
+- name: Create Jenkins systemd override for Java path
+  copy:
+    dest: /etc/systemd/system/jenkins.service.d/override.conf
+    content: |
+      [Service]
+      Environment="JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64"
+    mode: '0644'
+  notify: Reload systemd
+
+- name: Reload systemd daemon
+  systemd:
+    daemon_reload: yes
 
 - name: Start and enable Jenkins
   systemd:

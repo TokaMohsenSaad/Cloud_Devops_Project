@@ -1,0 +1,27 @@
+- name: Configure Jenkins Server
+  hosts: tag_jenkins_server
+  become: true
+  gather_facts: true
+
+  pre_tasks:
+    - name: Clean up all broken apt repositories and keyrings
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/apt/sources.list.d/jenkins.list
+        - /etc/apt/sources.list.d/docker.list
+        - /etc/apt/sources.list.d/download_docker_com_linux_ubuntu.list
+        - /usr/share/keyrings/jenkins-keyring.gpg
+        - /usr/share/keyrings/docker-archive-keyring.gpg
+        - /tmp/jenkins-key.asc
+        - /etc/apt/trusted.gpg
+
+    - name: Clean apt cache
+      command: apt clean
+
+  roles:
+    - java
+    - docker
+    - jenkins
+    - trivy

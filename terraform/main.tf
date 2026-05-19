@@ -7,7 +7,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket = "cloud-project222"
+    bucket = "cloud-project1233"
     key    = "cloud-devops-project/terraform.tfstate" //path of the state file in the bucket
     region = "us-east-1"
   }
