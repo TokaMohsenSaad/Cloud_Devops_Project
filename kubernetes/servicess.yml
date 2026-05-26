@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ivolve-service
+  namespace: ivolve
+spec:
+  selector:
+    app: ivolve
+  ports:
+  - protocol: TCP
+    targetPort: 8080
+    port: 80
+  type: ClusterIP
+
+    

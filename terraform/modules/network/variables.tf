@@ -25,3 +25,7 @@ variable single_nat_gateway {
     type = bool
     default = false
 }
+variable cluster_name {
+  description = "EKS cluster name for tagging and ALB annotation"
+  type        = string
+}
