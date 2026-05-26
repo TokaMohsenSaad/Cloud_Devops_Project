@@ -16,8 +16,9 @@ spec:
       containers:
       - name: ivolve-container
         image: tokamohsen2001/grad-pro:v1
+        imagePullPolicy: Always 
         ports:
-        - containerPort: 8080
+        - containerPort: 5000
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
