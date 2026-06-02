@@ -16,7 +16,7 @@ pipeline {
     stages {
         stage('Build Image') {
             steps {
-                buildImage(env.IMAGE_NAME, env.TAG, env.DOCKER_PATH)
+                buildImage(env.IMAGE_NAME, env.TAG)
             }
         }
         
