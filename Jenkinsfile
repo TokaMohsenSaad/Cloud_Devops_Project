@@ -1,4 +1,4 @@
-@Library('clouddevops-shared-library') _
+@Library('github-jenkins-global-lib') _
 
 pipeline {
     agent any
