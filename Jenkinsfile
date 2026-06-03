@@ -7,7 +7,7 @@ pipeline {
         IMAGE_NAME = 'grad-pro'
         REGISTRY = 'tokamohsen2001'
         TAG = "${BUILD_NUMBER}"
-        GIT_REPO_URL = 'https://github.com/TokaMohsenSaad/Cloud_Devops_Project.git'
+        GIT_REPO_URL = 'github.com/TokaMohsenSaad/Cloud_Devops_Project.git'
         GIT_CREDENTIALS = 'git_credentials'
         DOCKER_PATH = 'docker'
         MANIFEST_PATH = 'kubernetes/deployment.yml'
