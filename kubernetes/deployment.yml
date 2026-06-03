@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: ivolve-container
-        image: tokamohsen2001/grad-pro:v1
+        image: tokamohsen2001/grad-pro:18
         imagePullPolicy: Always 
         ports:
         - containerPort: 5000
