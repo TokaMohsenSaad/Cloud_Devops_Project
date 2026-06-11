@@ -4,6 +4,12 @@ metadata:
   name: clouddevops-app
   namespace: argo
 spec:
+  ignoreDifferences:
+    - group: ""
+      kind: Namespace
+      name: argo
+      jsonPointers:
+        - /metadata
   project: default
   source:
     repoURL: https://github.com/TokaMohsenSaad/Cloud_Devops_Project.git
@@ -18,3 +24,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+      - PruneLast=true
