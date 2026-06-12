@@ -200,3 +200,5 @@ Application Updated Automatically
 This project demonstrates a complete Cloud DevOps workflow that combines Infrastructure as Code, Configuration Management, Container Orchestration, Continuous Integration, and GitOps-based Continuous Deployment.
 
 By integrating Terraform, Ansible, Kubernetes, Jenkins, and ArgoCD, the platform provides an automated, scalable, and maintainable deployment pipeline capable of delivering applications reliably and efficiently.
+
+![Docker Stage](flow.png)
