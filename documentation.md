@@ -201,4 +201,4 @@ This project demonstrates a complete Cloud DevOps workflow that combines Infrast
 
 By integrating Terraform, Ansible, Kubernetes, Jenkins, and ArgoCD, the platform provides an automated, scalable, and maintainable deployment pipeline capable of delivering applications reliably and efficiently.
 
-![Docker Stage](flow.png)
+![Flow](flow.png)
